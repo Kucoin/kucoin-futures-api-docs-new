@@ -372,14 +372,15 @@ API中的所有时间戳以Unix时间戳毫秒为单位返回（如：`155807916
     1. 再将加密内容使用 `base64` 编码。              
 
 #### 请求头中的`KC-API-PASSPHRASE`
-    1. 对于V1版的API-KEY，请使用明文传递
-    1. 对于V2版的API-KEY，需要将`KC-API-KEY-VERSION`指定为`2`，并将passphrase使用API的Secret进行`HMAC-sha256`加密，再将加密内容通过`base64`编码后传递
+* 对于V1版的API-KEY，请使用明文传递
+* 对于V2版的API-KEY，需要将`KC-API-KEY-VERSION`指定为`2`，并将passphrase使用API的Secret进行`HMAC-sha256`加密，再将加密内容通过`base64`编码后传递
 
 注意：
-1. 加密的 `timestamp` 需要和请求头中的`KC-API-TIMESTAMP`保持一致
-2. 进行加密的`body`需要和`Request Body`中的内容保持一致
-3. 请求方法需要大写
-4. 对于 `GET`, `DELETE` 请求，endpoint 需要包含请求的参数（`/api/v1/deposit-address?currency=XBT`）。如果没有请求体（通常用于GET请求），请使用空字符串“”表示请求体
+
+* 加密的 `timestamp` 需要和请求头中的`KC-API-TIMESTAMP`保持一致
+* 进行加密的`body`需要和`Request Body`中的内容保持一致
+* 请求方法需要大写
+* 对于 `GET`, `DELETE` 请求，endpoint 需要包含请求的参数（`/api/v1/deposit-address?currency=XBT`）。如果没有请求体（通常用于GET请求），请使用空字符串“”表示请求体
 
 
 #### 请求头中的`KC-API-TIMESTAMP``:
@@ -483,9 +484,9 @@ KC-API-SIGN = 7QP/oM0ykidMdrfNEUmng8eZjg/ZvPafjIqmxiVfYu4=
     - `TP`	最新成交价
 </br></br>
 * 有效方式(`timeInForce`):
-    - `GTC`: 用户主动取消才过期
-    - `IOC`:立即成交可成交的部分，然后取消剩余部分，不进入买卖盘；
-    - `FOK`：如果下单不能全部成交，则取消；
+    - `GTC` 用户主动取消才过期
+    - `IOC` 立即成交可成交的部分，然后取消剩余部分，不进入买卖盘
+    - `FOK` 如果下单不能全部成交，则取消
 </br></br>
 * 资金记录类型(`type`):
     - `CONSUME`-消费,
@@ -1248,9 +1249,9 @@ clientOid | STRING | NO | 用户自定义orderId
 | size | 数量 |
 | dealSize | 订单成交数量 |
 | dealValue | 成交价值 |
-| workingType | 触发价格方式：MP（标记价格）、TP（最新成交价） |
+| workingType | 触发价格方式：`MP`（标记价格）、`TP`（最新成交价） |
 | stopPrice | 触发价格，订单止盈止损 止损价格 |
-| timeInForce | GTC: 用户主动取消才过期, IOC:立即成交可成交的部分，然后取消剩余部分，不进入买卖盘； FOK：如果下单不能全部成交，则取消； |
+| timeInForce | `GTC`: 用户主动取消才过期, `IOC`:立即成交可成交的部分，然后取消剩余部分，不进入买卖盘； `FOK`：如果下单不能全部成交，则取消； |
 | postOnly | 是否只做maker |
 | hidden | 是否是隐藏单 |
 | leverage | 杠杆 |
@@ -1804,7 +1805,7 @@ status | 状态：`Open`(已上线)`、PrepareSettled`(准备结算)、`BeingSet
 }
 ```
 ### HTTP请求
-`GET /api/v1/contracts/{symbol}`
+`GET /api/v2/contracts/{symbol}`
 ### 参数
 参数 | 数据类型 | 是否必须 | 含义 |  
 --------- | ------- | -----------| -----------|
@@ -1902,7 +1903,7 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
                 "funding": "0.0030520000",
                 "settleCurrency": "USDT"
             }
-        ],
+        ]
     }
 }
 ```
@@ -1975,8 +1976,7 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
                 "timePoint": "1649160000000",
                 "value": "0.000100"
             }
-        ],
-        "hasMore": false
+        ]
     }
 }
 ```
