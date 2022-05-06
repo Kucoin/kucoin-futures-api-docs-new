@@ -1976,7 +1976,8 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
                 "timePoint": "1649160000000",
                 "value": "0.000100"
             }
-        ]
+        ],
+        "hasMore": false
     }
 }
 ```
@@ -1988,8 +1989,14 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
 | symbol | String | YES | 合约symbol	|
 | startAt | Long  | NO | 开始时间（毫秒）	|
 | endAt | Long  | NO | 截止时间（毫秒）	|
-| fromId | Long | NO | 从哪一条成交id开始返回.缺省返回最近的资金费率列表|
+| offset | Long | NO | 从哪一条成交id开始返回.缺省返回最近的资金费率列表|
 | limit | Integer | NO | 默认 `50`; 最大 `1000`.|
+
+<aside class="notice">
+   查询资金费率时，<code>startAt/endAt</code> 限制了查询资金费率的开始/结束时间，如果返回数据中<code>hasMore</code>为<code>true</code>时，表示存在下一页数据，可以将<code>offset</code>设置为最后一条资金费率的<code>timePoint</code>，继续翻页查询数据。
+</aside>
+
+
 ### 返回值
 | 字段   | 含义   |
 | ------ | ------ |
@@ -1997,6 +2004,7 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
 | granularity | 时间粒度 |
 | timePoint | 时间点(毫秒) |
 | value | 资金费率 |
+| hasMore | 是否有下一页 |
 
 ## 查询合约标记价格
 ```json

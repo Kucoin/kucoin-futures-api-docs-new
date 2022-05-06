@@ -99,8 +99,8 @@ Users with good market making strategies and large trading volumes are welcome t
  - Provide screenshots of market making trading volume on other trading platforms (such as trading volume within `30` days or VIP level, etc.); 
  - Please briefly describe your method of money making, and you don’t need to elaborate.
 
-## 数据中心
-KuCoin 数据中心位于AWS日本东京 (ap-northeast-1a) 地区。
+## Data Center
+KuCoin data center is located in AWS Japan's ap-northeast-1a region.
 
 ---
 # REST API
@@ -1993,7 +1993,8 @@ Parameters | Data Type | Compulsory? | Definitions |
                 "timePoint": "1649160000000",
                 "value": "0.000100"
             }
-        ]
+        ],
+        "hasMore": false
     }
 }
 ```
@@ -2003,10 +2004,14 @@ Parameters | Data Type | Compulsory? | Definitions |
 Parameters | Data Type | Compulsory? | Definitions |  
 --------- | ------- | -----------| -----------|                                      |
 | symbol   | String   | Yes | Contract Symbol |
-| startAt | Long   | Yes | Start time |
-| endAt | Long   | Yes | End time |
-| fromId | Long | Yes | Which transaction `ID` to start returning from.	|
-| limit | Integer | Yes | Default `50`, max `1000`.	|
+| startAt | Long   | No | Start time |
+| endAt | Long   | No | End time |
+| offset | Long | No | offset time point (ms)	|
+| limit | Integer | No | Default `50`, max `1000`.	|
+
+<aside class="notice">
+   When querying the funding rate, when the <code>startAt</code> and <code>endAt</code> parameters are specified, the funding rate during this period will be queried. If <code>hasMore</code> is <code>true</code> in the returned data, it means that there is data on the next page, then you can set the <code>offset</code> to the <code>timePoint</code> of the last funding rate, and then continue to turn pages to query the data.
+</aside>
 
 ### Return Value
 | Field   | Definitions   |
@@ -2015,8 +2020,9 @@ Parameters | Data Type | Compulsory? | Definitions |
 | granularity | Time granulity |
 | timePoint | Time point (ms) |
 | value | Funding rate |
+| hasMore | Is there data on the next page |
 
-## 查询合约标记价格
+## Get the Contract’s Mark price
 ```json
 {
     "code": "200000",
@@ -2028,18 +2034,18 @@ Parameters | Data Type | Compulsory? | Definitions |
     }
 }
 ```
-### HTTP请求
+### HTTP Request
 `GET /api/v2/mark-price/{symbol}/current`
-### 参数
-参数 | 数据类型 | 是否必须 | 含义 |
---------- | ------- | -----------| -----------|
-symbol | String | 是 | 合约symbol
-### 返回值
-属性 | 含义 |
+### Parameters
+Parameters | Data Type | Compulsory? | Definitions |  
+--------- | ------- | -----------| -----------|                                      |
+| symbol   | String   | Yes | Contract Symbol |
+### Return Value
+| Field   | Definitions   |
 --------- | -----------|
-symbol | 合约symbol |
-timePoint | 时间点, 以毫秒为单位 |
-value | 标记价格值 |
+symbol | Contract Symbol
+timePoint | Time point (ms)
+value | mark price value
 indexPrice | indexPrice |
 
 # Order Book
@@ -2503,8 +2509,7 @@ Order book datamining, transaction history data, and snapshot messages all retur
 
 Topic: `/futuresMarket/ticker:{symbol}`
 
-* 推送频率: `实时推送`
-
+* Push frequency: real-time
 
 Subscribe to this topic to get data pushes on the best bid and offer prices (BBO) for the specified trading pair.
 <br/>
@@ -2610,7 +2615,7 @@ Calibration Process:
 
 Topic: `/futuresMarket/execution:{symbol}`
 
-* 推送频率: `实时推送`
+* Push frequency: real-time
 
 Every time an order is matched, the system will push the order transaction record message
 
@@ -2830,7 +2835,7 @@ Topic: `/futuresContract/fundingRate:{symbol}`
 
 Topic: `/futuresTrade/orders`
 
-* 推送频率: `实时推送`
+* Push frequency: real-time
 
 ```json
 {
@@ -2893,7 +2898,7 @@ Topic: `/futuresTrade/orders`
 
 Topic: `/futuresTrade/stopOrder`
 
-* 推送频率: `实时推送`
+* Push frequency: real-time
 
 ```json
 {
@@ -2955,7 +2960,7 @@ Topic: `/futuresTrade/stopOrder`
 
 Topic: `/futuresAccount/accountChange`
 
-* 推送频率: `实时推送`
+* Push frequency: real-time
 
 ```json
 {
@@ -3004,7 +3009,7 @@ Topic: `/futuresAccount/accountChange`
 
 Topic: `futuresPosition/position`
 
-* 推送频率: `实时推送`
+* Push frequency: real-time
 
 ```json
 {
