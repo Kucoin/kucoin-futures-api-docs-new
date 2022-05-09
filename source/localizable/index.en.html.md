@@ -8,6 +8,10 @@ The KuCoin Futures API is divided into two parts: `REST API` and `Websocket` rea
  -  The REST API includes three types: `User (private)`, `Trade (private)` and `Market Data (public)`
  -  Websocket includes two types: `Public Channel` and `Private Channel`
 
+<aside class="notice">
+    Currently, the related interface of the new document is not open for use. The launch time will be announced later. If you have any questions, please use email to contact <code>newapi@kucoin.plus</code>
+</aside>
+
 ## Update Preview
 
 <!-- **In order to further improve API security, KuCoin has been upgraded to the version 2 of the API-KEY, and the verification logic has also undergone some changes. We recommend that you add and replace the new API-KEY on the [API Management page](https://futures.kucoin.com/api). KuCoin will continue to support the use of the old API-KEY until May 1, 2021. Please see "Message Signature" for more details.** -->
