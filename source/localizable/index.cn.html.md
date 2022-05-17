@@ -665,6 +665,40 @@ maxRiskLimit | 该杠杆下持仓最大限额 |
 
 # 账户
 
+## 查询子账户列表
+```json
+{
+    "code": "200", //code为200代表成功，否则代表失败
+    "msg": "",
+    "retry": true,
+    "success": true,
+    "data": [
+        {
+            "userId": "620635a64a6f480001123ffa", //子账号id
+            "subName": "William" //子账号名称
+        }，
+    {
+            "userId": "620635a64a6f48004353461",
+            "subName": "David"
+        }
+    ]
+}
+```
+### HTTP请求
+`GET /api/v2/sub-accounts`
+### API权限
+该接口需要`通用权限`
+### 频率限制
+此接口针对每个账号请求频率限制为`30次/3s`
+### 参数
+`无`
+### 返回值
+字段|含义
+---|---
+userId|子账号id
+subName|子账号名称
+
+
 ## 获取账户概览
 ```json
 {
@@ -815,6 +849,33 @@ remark|说明
 
 
 # 划转
+## 子母账号之间划转
+``` json
+{
+    "code": "200", //code为200代表划转成功，否则代表失败
+    "msg": "",
+    "retry": true,
+    "success": true,
+}
+```
+### HTTP请求
+`POST api/v2/sub-transfer`
+### API权限
+该接口需要`交易权限`
+### 频率限制
+此接口针对每个账号请求频率限制为`30次/3s `
+### 参数
+参数|数据类型|是否必需|含义
+---|---|---|---
+amount | Number | YES | 划转金额
+currency | String | YES | 币种
+subUserId | String | YES | 子账户用户id
+direction | String | YES | 资金划转方向：`OUT`-母账户划转给子账户,`IN`-子账户划转给母账户
+accountType | String | YES | 主用户账户类型：`MAIN`-储蓄账户,`TRADE`-交易账户,`CONTRACT`-合约账户
+subAccountType | String | YES | 子用户账户类型：`MAIN`-储蓄账户,`TRADE`-交易账户,`CONTRACT`-合约账户
+### 返回值
+`code`为`200`代表划转成功，否则代表失败
+
 ## 转出到KuCoin储蓄/币币账户
 ``` json
 {
@@ -945,55 +1006,6 @@ reason|失败原因
 sn|序列号
 createdAt|时间
 remark|付款账户备注
-
-
-## 取消转出
-```json
-{
-    "success": true,
-    "code": "200", //200代表成功，其他代表失败
-    "msg": "success",
-    "retry": false,
-    "data": null
-}
-```
-### HTTP请求
-`DELETE /api/v2/cancel/transfer-out`
-### API权限
-该接口需要`通用权限`
-### 频率限制
-此接口针对每个账号请求频率限制为`30次/3s`
-### 参数  
-参数|数据类型|是否必需|含义
----|---|---|---
-applyId|String|YES|转出申请id
-### 返回值
-当`code`为`200`代表成功，其他代表失败
-
-## 资金转入合约账户
-``` json
-{
-    "code": "200", //code为200代表转入成功，否则代表失败
-    "msg": "",
-    "retry": true,
-    "success": true
-}
-```
-### HTTP请求
-`POST /api/v2/transfer-in`
-### API权限
-该接口需要`交易权限`
-### 频率限制
-此接口针对每个账号请求频率限制为`30次/3s`
-### 参数  
-参数|数据类型|是否必需|含义
----|---|---|---
-amount|Number|YES|交易金额
-currency|String|YES|币种
-payAccountType|String|YES|付款账户类型：只能是`MAIN`-储蓄账户，`TRADE`-交易账户
-### 返回值
-当`code`为`200`代表成功，其他代表失败
-
 
 
 ---
