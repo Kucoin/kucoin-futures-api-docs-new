@@ -682,6 +682,39 @@ maxRiskLimit | The maximum position limit under this leverage |
 
 # Account
 
+## Get the list of all sub-accounts
+```json
+{
+    "code": "200", //200 represents a successful query, while other codes represent failure.
+    "msg": "",
+    "retry": true,
+    "success": true,
+    "data": [
+        {
+            "userId": "620635a64a6f480001123ffa", //The user ID of a sub-user.
+            "subName": "William" //The username of a sub-user.
+        }，
+    {
+            "userId": "620635a64a6f48004353461",
+            "subName": "David"
+        }
+    ]
+}
+```
+### HTTP Request
+`GET /api/v2/sub-accounts`
+### API Permissions
+This API requires `General` permissions
+### Frequency Limits
+The request frequency of this API is limited to `30 times/3s` for each account
+### Parameters
+`N/A`
+### Return Value
+Field|Definitions
+---|---
+userId|The user ID of a sub-user.
+subName|The username of a sub-user.
+
 ## Get account overview
 ```json
 {
@@ -832,6 +865,34 @@ remark|Description
 
 
 # Transfer
+## Transfer between Master user and Sub-user
+``` json
+{
+    "code": "200", //200 represents a successful transfer, while other codes represent failure.
+    "msg": "",
+    "retry": true,
+    "success": true,
+}
+```
+### HTTP Request
+`POST api/v2/sub-transfer`
+### API Permissions
+This API requires `Trade` permissions
+### Frequency Limits
+The request frequency of this API is limited to `30 times/3s` for each account
+### Parameters
+Parameters|Data Type|Compulsory?|Definitions
+---|---|---|---
+amount | Number | YES | Transfer amount
+currency | String | YES | currency
+subUserId | String | YES | the user ID of a sub-account.
+direction | String | YES | `OUT` — the master user to sub user<br/>`IN` — the sub user to the master user.
+accountType | String | YES | The account type of the master user: `MAIN`, `TRADE` or `CONTRACT`
+subAccountType | String | YES | The account type of the sub user: `MAIN`, `TRADE` or `CONTRACT`
+### Return Value
+`code` `200` represents a successful transfer, while other codes represent failure.
+
+
 ## Transfer out to KuCoin main/trading account
 ``` json
 {
@@ -963,29 +1024,6 @@ sn|S/No.
 createdAt|Date
 remark|Payment account remarks
 
-
-## Cancel transfer out
-```json
-{
-    "success": true,
-    "code": "200", // 200 represents a successful query, while other codes represent failure.
-    "msg": "success",
-    "retry": false,
-    "data": null
-}
-```
-### HTTP Request
-`DELETE /api/v2/cancel/transfer-out`
-### API Permissions
-This API requires `General` permissions
-### Frequency Limits
-The request frequency of this API is limited to `30 times/3s` for each account
-### Parameters  
-Parameters|Data Type|Compulsory?|Definitions
----|---|---|---
-applyId|String|YES|Transfer out request ID
-### Return Value
-The `code` `200` represents a successful query, while other codes represent failure.
 
 ## Fund transfer into futures account
 ``` json
