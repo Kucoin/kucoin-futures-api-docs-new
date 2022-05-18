@@ -1746,7 +1746,7 @@ type | String | No | Close position type
 settleCurrency | String | No | Contract settlement currency type
 startAt | String | No | Start time (maximum time span `3` months)
 endAt | String | No | End time (maximum time span `3` months)
-limit | int | Yes | Number of records (default `50`, max `1000`)
+limit | int | No | Number of records (default `50`, max `1000`)
 
 <aside class="notice">
 If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
