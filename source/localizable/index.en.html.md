@@ -834,7 +834,8 @@ startAt|Long|NO|Start time
 endAt|Long|NO|End time  
 
 <aside class="notice">
-If <code>startAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
 </aside>
 
 * Cashflow type (`type`) description:
@@ -1007,7 +1008,8 @@ currency|String|NO|Currency Type
 status|String|NO|Status: `PROCESSING` \- processing, `SUCCESS` \- success, `FAILURE` \- failure
 
 <aside class="notice">
-If <code>startAt</code> and <code>endAt</code> are not transmitted, returns the past <code>7</code> days’ data by default.
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
 </aside>
 
 ### Return Value
@@ -1223,6 +1225,10 @@ Parameters | Data Type | Compulsory? | Definitions
 | endAt | Long | NO | End time (ms)	|
 | limit | Integer | NO | Default `50`, max `1000`.	|
 | fromId | Long | NO |Which transaction ID to start returning from. By default, the latest transaction record will be returned	|
+<aside class="notice">
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
+</aside>
 ### Return Value
 | Field   | Definitions   |
 | ------ | ------ |
@@ -1296,6 +1302,9 @@ Parameters | Data Type | Compulsory? | Definitions
 
 <aside class="notice">
 Select either <code>orderId</code> or <code>clientOid</code>. If both are passed, <code>orderId</code> is used by default.
+</aside>
+<aside class="notice">
+If it is not an active order, you can only query the detailed data within <code>1</code> month.
 </aside>
 
 ### Return Value
@@ -1540,6 +1549,10 @@ Parameters | Data Type | Compulsory? | Definitions
 | endAt | Long  | YES | End time (ms)	|
 | fromId | Long | YES | Which transaction ID to start returning from.	|
 | limit | Integer | YES | Default `50`, max `1000`.	|
+<aside class="notice">
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
+</aside>
 ### Return Value
 | Field   | Definitions   |
 | ------ | ------ |
@@ -1734,6 +1747,11 @@ settleCurrency | String | No | Contract settlement currency type
 startAt | String | No | Start time (maximum time span `3` months)
 endAt | String | No | End time (maximum time span `3` months)
 limit | int | Yes | Number of records (default `50`, max `1000`)
+
+<aside class="notice">
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
+</aside>
 
 * `type` Close position type description:
     * `CLOSE_LONG` (manual close position)
@@ -1976,6 +1994,11 @@ Parameters | Data Type | Compulsory? | Definitions |
 | endAt   | Long     | No  | End time (ms)                               |
 | limit   | Integer  | No  | Default `50`, max `1000`.                             |
 | fromId  | Long     | No  | Which transaction `ID` to start returning from. By default, the latest transaction record will be returned |
+
+<aside class="notice">
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
+</aside>
 
 ### Return Value
 | Field   | Definitions   |
