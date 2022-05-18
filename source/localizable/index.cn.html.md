@@ -818,7 +818,8 @@ startAt|Long|NO|开始时间
 endAt|Long|NO|结束时间  
 
 <aside class="notice">
-如果未传<code>startAt</code>,默认返回最近7天数据。
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
 </aside>
 
 * 流水类型(`type`)说明：
@@ -990,7 +991,8 @@ currency|String|NO|币种
 status|String|NO|状态，`PROCESSING`-处理中，`SUCCESS`-成功, `FAILURE`-失败
 
 <aside class="notice">
-如果不传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
 </aside>
 
 ### 返回值
@@ -1180,6 +1182,10 @@ orderIds | 成功撤掉的订单id
 | endAt | Long | NO | 截止时间（毫秒）	|
 | limit | Integer | NO | 默认 `50`; 最大 `1000`.	|
 | fromId | Long | NO |从哪一条成交id开始返回. 缺省返回最近的成交记录	|
+<aside class="notice">
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
+</aside>
 ### 返回值
 | 字段   | 含义   |
 | ------ | ------ |
@@ -1252,6 +1258,9 @@ clientOid | STRING | NO | 用户自定义orderId
 
 <aside class="notice">
 <code>orderId</code>和<code>clientOid</code>二选一，如果都传，默认使用<code>orderId</code>.
+</aside>
+<aside class="notice">
+如果不是活跃委托订单则只能查询<code>1</code>个月以内的详情数据.
 </aside>
 
 ### 返回值
@@ -1497,6 +1506,10 @@ clientOid | STRING | NO | 用户自定义orderId
 | endAt | Long  | NO | 截止时间（毫秒）	|
 | fromId | Long | NO | 从哪一条成交id开始返回.|
 | limit | Integer | NO | 默认 `50`; 最大 `1000`.|
+<aside class="notice">
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
+</aside>
 ### 返回值
 | 字段   | 含义   |
 | ------ | ------ |
@@ -1691,6 +1704,11 @@ settleCurrency | String | 否 | 合约结算币种
 startAt | String | 否 | 开始时间（时间跨度最多`3`个月）
 endAt | String | 否 | 截止时间（时间跨度最多`3`个月）
 limit | int | 是 | 记录数（默认`50`，最大`1000`）
+
+<aside class="notice">
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
+</aside>
 
 * `type`平仓类型说明：
     * `CLOSE_LONG`（手动平多）
@@ -1933,6 +1951,11 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
 | endAt | Long  | NO | 截止时间（毫秒）	|
 | fromId | Long | NO | 从哪一条成交id开始返回.缺省返回最近的资金费用结算历史|
 | limit | Integer | NO | 默认 `50`; 最大 `1000`.|
+
+<aside class="notice">
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
+</aside>
 
 ### 返回值
 | 字段   | 含义   |
