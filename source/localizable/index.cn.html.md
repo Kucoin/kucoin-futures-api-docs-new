@@ -1703,7 +1703,7 @@ type | String | 否 | 平仓类型
 settleCurrency | String | 否 | 合约结算币种
 startAt | String | 否 | 开始时间（时间跨度最多`3`个月）
 endAt | String | 否 | 截止时间（时间跨度最多`3`个月）
-limit | int | 是 | 记录数（默认`50`，最大`1000`）
+limit | int | 否 | 记录数（默认`50`，最大`1000`）
 
 <aside class="notice">
 如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
