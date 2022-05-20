@@ -1125,6 +1125,10 @@ Attribute  | Definitions
 --------- | -----------
 orderId | Order ID 
 
+<aside class="notice">
+If the return information of the order interface is <code>{"success":false,"code":"100000","msg":"error.timeOut","retry":false,"data":null}</code >represents an order timeout. In this case, you need to specify the <code>clientOid</code> parameter to query the <code>GET /api/v2/order/detail</code> endpoint to determine whether the order request is successful
+</aside>
+
 ## Single Order Cancellation
 ```json
 {

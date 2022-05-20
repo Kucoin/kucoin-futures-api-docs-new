@@ -1082,6 +1082,10 @@ remark|付款账户备注
 --------- | -----------
 orderId | 订单id 
 
+<aside class="notice">
+如果下单接口返回信息为<code>{"success":false,"code":"100000","msg":"error.timeOut","retry":false,"data":null}</code>代表下单超时，这种情形需要通过指定<code>clientOid</code>参数查询<code>GET /api/v2/order/detail</code>接口，来确定下单请求是否成功
+</aside>
+
 ## 单个撤单
 ```json
 {
