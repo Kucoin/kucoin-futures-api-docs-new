@@ -923,7 +923,7 @@ subAccountType | String | YES | The account type of the sub user: `MAIN`, `TRADE
 }
 ```
 ### HTTP Request
-`POST /api/v2/transfer-out`
+`POST /api/v2/account/transfer-out`
 ### API Permissions
 This API requires `Trade` permissions
 ### Frequency Limits
