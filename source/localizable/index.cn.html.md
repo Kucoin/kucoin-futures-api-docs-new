@@ -906,7 +906,7 @@ subAccountType | String | YES | 子用户账户类型：`MAIN`-储蓄账户,`TRA
 }
 ```
 ### HTTP请求
-`POST /api/v2/transfer-out`
+`POST /api/v2/account/transfer-out`
 ### API权限
 该接口需要`交易权限`
 ### 频率限制
