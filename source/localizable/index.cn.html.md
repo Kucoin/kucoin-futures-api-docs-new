@@ -114,7 +114,7 @@ REST API对用户、交易及市场数据均提供了接口。
 
 对于`GET`请求，只需将请求参数拼接在请求路径后面。
 
-例如：对于“仓位” 接口，其默认端点为`/api/v1/position`。请求“合约”参数（`XBTUSDM`）时，该端点将变为：`/api/v1/position?symbol=XBTUSDM`。因此，您最终请求的URL应为：`https://api-futures.kucoin.com/api/v1/position?symbol=XBTUSDM`。
+例如：对于“获取某个合约的仓位” 接口，其默认端点为`/api/v2/symbol-position`。请求“合约”参数（`XBTUSDM`）时，该端点将变为：`/api/v2/symbol-position?symbol=XBTUSDM`。因此，您最终请求的URL应为：`https://api-futures.kucoin.com/api/v2/symbol-position?symbol=XBTUSDM`。
 
 ## 请求
 所有的请求和响应的内容类型都是`application/json`。  
@@ -124,7 +124,7 @@ REST API对用户、交易及市场数据均提供了接口。
 
 ## 参数
 
-对于`GET`和`DELETE`请求，需将参数拼接在请求URL中（如：`/api/v1/position?symbol=XBTUSDM`）。
+对于`GET`和`DELETE`请求，需将参数拼接在请求URL中（如：`/api/v2/symbol-position?symbol=XBTUSDM`）。
 
 对于`POST`和`PUT`请求，需将参数以JSON格式拼接在请求主体中（如：`{"side":"buy"}`）。
 <aside class="notice">不要在JSON字符串中添加空格</aside>
