@@ -2674,7 +2674,7 @@ Calibration Process:
     "data": {
         "symbol": "XBTUSDM", // Contract
         "matchSide": "sell", // Transaction side (buy/sell)
-        "size": 1, // Order remaining quantity
+        "size": 1, // Fill quantity
         "price": 3200.00, // Fill price
         "tradeId": 21518, // Transaction s/no.
         "ts": 1650447324950 // Time in ms

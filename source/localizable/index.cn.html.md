@@ -2632,7 +2632,7 @@ Topic：`/futuresMarket/level2:{symbol}`
     "data": {
         "symbol": "XBTUSDM", // 合约
         "matchSide": "sell", // 成交方向 buy/sell
-        "size": 1, // 订单剩余数量
+        "size": 1, // 订单成交张数
         "price": 3200.00, // 成交价格
         "tradeId": 21518, // 成交编号
         "ts": 1650447324950 // 时间毫秒
