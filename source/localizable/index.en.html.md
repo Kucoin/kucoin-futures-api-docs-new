@@ -127,7 +127,7 @@ The request URL consists of the base URL and the specified API endpoint.
 Each API provides a corresponding endpoint, available under the HTTP `Requests` module.
 For `GET` requests, just concatenate the request parameters after the request path.
 
-For example: For the "Position" API, the default endpoint is `/api/v1/position`. When the "contract" parameter (`XBTUSDM`) is requested, this endpoint becomes: `/api/v1/position?symbol=XBTUSDM`. So your final request URL should be: `https://api-futures.kucoin.com/api/v1/position?symbol=XBTUSDM`.
+For example: For the "Get the position of a contract" API, the default endpoint is `/api/v2/symbol-position`. When the "contract" parameter (`XBTUSDM`) is requested, this endpoint becomes: `/api/v2/symbol-position?symbol=XBTUSDM`. So your final request URL should be: `https://api-futures.kucoin.com/api/v2/symbol-position?symbol=XBTUSDM`.
 
 ## Requests
 The content-type of all requests and responses is `application/json`.  
@@ -136,7 +136,7 @@ Unless otherwise stated, all timestamp parameters are in Unix timestamp millisec
 
 ## Parameters
 
-For `GET` and `DELETE` requests, the parameters need to be concatenated in the request URL (eg: `/api/v1/position?symbol=XBTUSDM`).
+For `GET` and `DELETE` requests, the parameters need to be concatenated in the request URL (eg: `/api/v2/symbol-position?symbol=XBTUSDM`).
 
 For `POST` and `PUT` requests, the parameters need to be spliced in the request body in JSON format (eg: `{"side":"buy"}`).
 <aside class="notice">Don't add spaces to JSON strings.</aside>
@@ -2674,7 +2674,7 @@ Calibration Process:
     "data": {
         "symbol": "XBTUSDM", // Contract
         "matchSide": "sell", // Transaction side (buy/sell)
-        "size": 1, // Order remaining quantity
+        "size": 1, // Fill quantity
         "price": 3200.00, // Fill price
         "tradeId": 21518, // Transaction s/no.
         "ts": 1650447324950 // Time in ms
