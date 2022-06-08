@@ -1737,6 +1737,63 @@ closeTime |平仓时间  |
 openPrice | 开仓价格 | 
 closePrice | 平仓价格 | 
 
+# 资金费用
+
+## 查询资金费用结算历史
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "dataList": [
+            {
+                "id": "2783173922521088",
+                "uid": "4456",
+                "symbol": "SHIBUSDTM",
+                "timePoint": "1644910900000",
+                "fundingRate": "0.0010000000",
+                "markPrice": "0.0000305200",
+                "qty": "-1",
+                "entryValue": "-3.0520000000",
+                "funding": "0.0030520000",
+                "settleCurrency": "USDT"
+            }
+        ]
+    }
+}
+```
+### HTTP请求
+`GET /api/v2/funding-history`
+### 参数
+参数 | 数据类型 | 是否必须 | 含义 
+--------- | ------- | -----------| -----------
+| symbol | String | YES | 合约symbol	|
+| startAt | Long  | NO | 开始时间（毫秒）	|
+| endAt | Long  | NO | 截止时间（毫秒）	|
+| fromId | Long | NO | 从哪一条成交id开始返回.缺省返回最近的资金费用结算历史|
+| limit | Integer | NO | 默认 `50`; 最大 `1000`.|
+
+<aside class="notice">
+如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
+<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
+</aside>
+
+### 返回值
+| 字段   | 含义   |
+| ------ | ------ |
+| id | id |
+| uid | 用户uid |
+| symbol | 合约symbol |
+| timePoint | 时间点(毫秒) |
+| fundingRate | 资金费率 |
+| markPrice | 标记价格 |
+| qty | 结算时的仓位数 |
+| entryValue | 结算时的仓位价值 |
+| funding | 结算的资金费用，正数表示收入；负数表示支出 |
+| settleCurrency | 结算币种 |
+
 ---
 # 市场数据
 市场数据是公共的，不需要验证签名。
@@ -1918,62 +1975,6 @@ minRiskLimit | 该等级最小风险限额 |
 maxLeverage | 该等级最大可用杠杆 | 
 initialMarginRate | 该等级初始保证金率 | 
 maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持保证金率 | 
-
-
-## 查询资金费用结算历史
-```json
-{
-    "success": true,
-    "code": "200",
-    "msg": "success",
-    "retry": false,
-    "data": {
-        "dataList": [
-            {
-                "id": "2783173922521088",
-                "uid": "4456",
-                "symbol": "SHIBUSDTM",
-                "timePoint": "1644910900000",
-                "fundingRate": "0.0010000000",
-                "markPrice": "0.0000305200",
-                "qty": "-1",
-                "entryValue": "-3.0520000000",
-                "funding": "0.0030520000",
-                "settleCurrency": "USDT"
-            }
-        ]
-    }
-}
-```
-### HTTP请求
-`GET /api/v2/funding-history`
-### 参数
-参数 | 数据类型 | 是否必须 | 含义 
---------- | ------- | -----------| -----------
-| symbol | String | YES | 合约symbol	|
-| startAt | Long  | NO | 开始时间（毫秒）	|
-| endAt | Long  | NO | 截止时间（毫秒）	|
-| fromId | Long | NO | 从哪一条成交id开始返回.缺省返回最近的资金费用结算历史|
-| limit | Integer | NO | 默认 `50`; 最大 `1000`.|
-
-<aside class="notice">
-如果未传<code>startAt</code>和<code>endAt</code>,默认返回最近7天数据。
-<code>startAt</code>和<code>endAt</code>的间隔时间不能超过<code>3</code>个月
-</aside>
-
-### 返回值
-| 字段   | 含义   |
-| ------ | ------ |
-| id | id |
-| uid | 用户uid |
-| symbol | 合约symbol |
-| timePoint | 时间点(毫秒) |
-| fundingRate | 资金费率 |
-| markPrice | 标记价格 |
-| qty | 结算时的仓位数 |
-| entryValue | 结算时的仓位价值 |
-| funding | 结算的资金费用，正数表示收入；负数表示支出 |
-| settleCurrency | 结算币种 |
 
 ## 获取合约K线数据
 ```json
