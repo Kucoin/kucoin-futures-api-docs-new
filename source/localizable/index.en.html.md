@@ -1780,6 +1780,63 @@ closeTime |Close position time  |
 openPrice | Entry price | 
 closePrice | Closing Price | 
 
+# Funding Fees
+
+## Query Funding Fee Settlement History
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "dataList": [
+            {
+                "id": "2783173922521088",
+                "uid": "4456",
+                "symbol": "SHIBUSDTM",
+                "timePoint": "1644910900000",
+                "fundingRate": "0.0010000000",
+                "markPrice": "0.0000305200",
+                "qty": "-1",
+                "entryValue": "-3.0520000000",
+                "funding": "0.0030520000",
+                "settleCurrency": "USDT"
+            }
+        ]
+    }
+}
+```
+### HTTP Request
+`GET /api/v2/funding-history`
+### Parameters
+Parameters | Data Type | Compulsory? | Definitions |  
+--------- | ------- | -----------| -----------|
+| symbol  | String   | Yes | Contract Symbol                                            |
+| startAt | Long     | No  | Start time (ms)                               |
+| endAt   | Long     | No  | End time (ms)                               |
+| limit   | Integer  | No  | Default `50`, max `1000`.                             |
+| fromId  | Long     | No  | Which transaction `ID` to start returning from. By default, the latest transaction record will be returned |
+
+<aside class="notice">
+If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
+The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
+</aside>
+
+### Return Value
+| Field   | Definitions   |
+| ------ | ------ |
+| id | id |
+| uid | User UID |
+| symbol | Contract Symbol |
+| timePoint | Time point (ms) |
+| fundingRate | Funding rate |
+| markPrice | Mark Price: |
+| qty | Position quantity at settlement |
+| entryValue | Position value at settlement |
+| funding | Funding fee at settlement. Positive value represents income, while negative value represents expense. |
+| settleCurrency | Settlement currency type |
+
 ---
 # Market Data
 Market data is public and doesn’t require a validated signature.
@@ -1961,62 +2018,6 @@ minRiskLimit | Minimum risk limit for that level |
 maxLeverage | Maximum available leverage for that level | 
 initialMarginRate | Initial margin rate for that level | 
 maintenanceMarginRate | Maintenance margin rate used when the position value is at the level’s limit | 
-
-
-## Query Funding Fee Settlement History
-```json
-{
-    "success": true,
-    "code": "200",
-    "msg": "success",
-    "retry": false,
-    "data": {
-        "dataList": [
-            {
-                "id": "2783173922521088",
-                "uid": "4456",
-                "symbol": "SHIBUSDTM",
-                "timePoint": "1644910900000",
-                "fundingRate": "0.0010000000",
-                "markPrice": "0.0000305200",
-                "qty": "-1",
-                "entryValue": "-3.0520000000",
-                "funding": "0.0030520000",
-                "settleCurrency": "USDT"
-            }
-        ]
-    }
-}
-```
-### HTTP Request
-`GET /api/v2/funding-history`
-### Parameters
-Parameters | Data Type | Compulsory? | Definitions |  
---------- | ------- | -----------| -----------|
-| symbol  | String   | Yes | Contract Symbol                                            |
-| startAt | Long     | No  | Start time (ms)                               |
-| endAt   | Long     | No  | End time (ms)                               |
-| limit   | Integer  | No  | Default `50`, max `1000`.                             |
-| fromId  | Long     | No  | Which transaction `ID` to start returning from. By default, the latest transaction record will be returned |
-
-<aside class="notice">
-If <code>startAt</code> and <code>endAt</code> is not transmitted, returns the past <code>7</code>  days’ data by default.
-The interval between <code>startAt</code> and <code>startAt</code> cannot exceed <code>3</code> months
-</aside>
-
-### Return Value
-| Field   | Definitions   |
-| ------ | ------ |
-| id | id |
-| uid | User UID |
-| symbol | Contract Symbol |
-| timePoint | Time point (ms) |
-| fundingRate | Funding rate |
-| markPrice | Mark Price: |
-| qty | Position quantity at settlement |
-| entryValue | Position value at settlement |
-| funding | Funding fee at settlement. Positive value represents income, while negative value represents expense. |
-| settleCurrency | Settlement currency type |
 
 ## Get the Contract’s K-Line Data
 ```json
