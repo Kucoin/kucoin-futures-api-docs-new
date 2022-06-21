@@ -106,6 +106,11 @@ Users with good market making strategies and large trading volumes are welcome t
 ## Data Center
 KuCoin data center is located in AWS Japan's ap-northeast-1a region.
 
+## FAQ
+Q: How to calculate the average transaction price of a filled order
+<br/>
+A: average price = `dealValue`/`dealSize`.
+
 ---
 # REST API
 ## Request Description
@@ -1132,11 +1137,13 @@ If the return information of the order interface is <code>{"success":false,"code
 ## Single Order Cancellation
 ```json
 {
-	"success": true,
-	"code": "200",
-	"msg": "success",
-	"retry": false,
-	"data": null
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "orderId": "51711797534732288"
+    }
 }
 ```
 
@@ -1258,38 +1265,32 @@ The interval between <code>startAt</code> and <code>startAt</code> cannot exceed
 ## Query Individual Order’s Details
 ``` json
 {
-    "success": true,
-    "code": "200",
-    "msg": "success",
-    "retry": false,
+    "code": "200000",
     "data": {
-        "id": "31744981194510336",
-        "symbol": "LINKUSDTM",
-        "size": 2020,
-        "orderType": "LIMIT",
-        "placeType": "DEFAULT",
-        "side": "SELL",
-        "price": "12.5930000000",
-        "dealSize": 911,
-        "reduceOnly": false,
-        "workingType": null,
-        "orderTime": "1651040593311",
-        "stopPrice": "0.0000000000",
-        "takeProfitPrice": "0.0000000000",
-        "orderDisplayType": "LIMIT",
-        "leverage": null,
+        "id": "49629987480838144",
+        "symbol": "BTCUSDTM",
+        "type": "LIMIT",
+        "side": "BUY",
+        "price": "1.0",
+        "size": "1",
+        "dealSize": "0",
+        "dealValue": "0.0",
+        "workingType": "",
+        "stopPrice": null,
         "timeInForce": "GTC",
-        "hidden": false,
-        "visibleSize": 0,
-        "updatedAt": null,
-        "status": "MATCHING",
-        "cancelSize": 0,
-        "dealValue": "1147.2223000000",
         "postOnly": false,
+        "hidden": false,
+        "leverage": 5,
         "closeOrder": false,
-        "fromReduce": false,
-        "settlementCurrency": null,
-        "createdAt": 1651040593311
+        "visibleSize": null,
+        "remark": null,
+        "orderTime": "1655304711124",
+        "reduceOnly": false,
+        "status": "FINISHED",
+        "placeType": "DEFAULT",
+        "takeProfitPrice": null,
+        "cancelSize": 1,
+        "clientOid": "122345"
     }
 }
 ```
@@ -1338,54 +1339,40 @@ If it is not an active order, you can only query the detailed data within <code>
 | takeProfitPrice| Order take profit stop loss take-profit price |
 | cancelSize | Cancellation quantity |
 | clientOid	| Customer order S/No. |
-| avgPrice	| Average transaction price |
-
 
 
 ## Query Active Orders
 ``` json
 {
-    "success": true,
-    "code": "200",
-    "msg": "success",
-    "retry": false,
-    "data": {
-        "currentPage": 1,
-        "pageSize": 50,
-        "totalNum": "1",
-        "totalPage": 1,
-        "items": [
-            {
-                "id": "31744981194510336",
-                "symbol": "LINKUSDTM",
-                "size": 2020,
-                "orderType": "LIMIT",
-                "placeType": "DEFAULT",
-                "side": "SELL",
-                "price": "12.5930000000",
-                "dealSize": 894,
-                "reduceOnly": false,
-                "workingType": null,
-                "orderTime": "1651040593311",
-                "stopPrice": "0.0000000000",
-                "takeProfitPrice": "0.0000000000",
-                "orderDisplayType": "LIMIT",
-                "leverage": null,
-                "timeInForce": "GTC",
-                "hidden": false,
-                "visibleSize": 0,
-                "updatedAt": null,
-                "status": "MATCHING",
-                "cancelSize": 0,
-                "dealValue": "1125.8142000000",
-                "postOnly": false,
-                "closeOrder": false,
-                "fromReduce": false,
-                "settlementCurrency": null,
-                "createdAt": 1651040593311
-            }
-        ]
-    }
+    "code": "200000",
+    "data": [
+        {
+            "id": "51812226666860544",
+            "symbol": "BTCUSDTM",
+            "type": "LIMIT",
+            "side": "BUY",
+            "price": "1.0000000000",
+            "size": "10",
+            "dealSize": "0",
+            "dealValue": "0.0000000000",
+            "workingType": null,
+            "stopPrice": "0.0000000000",
+            "timeInForce": "GTC",
+            "postOnly": false,
+            "hidden": false,
+            "leverage": null,
+            "closeOrder": false,
+            "visibleSize": 0,
+            "remark": null,
+            "orderTime": "1655824997481",
+            "reduceOnly": false,
+            "status": "MATCHING",
+            "placeType": "DEFAULT",
+            "takeProfitPrice": "0.0000000000",
+            "cancelSize": 0,
+            "clientOid": "12e7fdc0f17611ec990facde48001122"
+        }
+    ]
 }
 ``` 
 ### HTTP Request
@@ -1423,9 +1410,6 @@ Parameters | Data Type | Compulsory? | Definitions
 | takeProfitPrice| Order take profit stop loss take-profit price |
 | cancelSize | Cancellation quantity |
 | clientOid	| Customer order S/No. |
-| avgPrice	| Average transaction price |
-
-
 
 ## Query All Active Orders
 ```json
@@ -1500,46 +1484,41 @@ This API requires `General` permissions
 | takeProfitPrice| Order take profit stop loss take-profit price |
 | cancelSize | Cancellation quantity |
 | clientOid	| Customer order S/No. |
-| avgPrice	| Average transaction price |
 
 
 ## Query Historical Orders
 ```json
 {
-      "success": true,
-      "code": "200",
-      "msg": "success",
-      "retry": false,
-      "data": [
-          {
-              "id": "23528093465444352",
-              "symbol": "ETHUSDTM",
-              "type": "LIMIT",
-              "side": "SELL",
-              "price": "3491.0",
-              "size": 1,
-              "dealSize": 1,
-              "dealValue": "34.95",
-              "workingType": "",
-              "stopPrice": null,
-              "timeInForce": "GTC",
-              "postOnly": false,
-              "hidden": null,
-              "leverage": 5,
-              "closeOrder": false,
-              "visibleSize": 0,
-              "remark": null,
-              "orderTime": "61567287853208",
-              "reduceOnly": false,
-              "status": "FINISHED",
-              "placeType": "DEFAULT",
-              "takeProfitPrice": null,
-              "cancelSize": 0,
-              "clientOid": "",
-              "avgPrice": "3491.0"
-          }
-      ]
-  }
+    "code": "200000",
+    "data": [
+        {
+            "id": "51813991558696960",
+            "symbol": "BTCUSDTM",
+            "type": "LIMIT",
+            "side": "BUY",
+            "price": "1.0000000000",
+            "size": "10",
+            "dealSize": "0",
+            "dealValue": "0.0000000000",
+            "workingType": null,
+            "stopPrice": "0.0000000000",
+            "timeInForce": "GTC",
+            "postOnly": false,
+            "hidden": false,
+            "leverage": null,
+            "closeOrder": false,
+            "visibleSize": 0,
+            "remark": null,
+            "orderTime": "1655825418307",
+            "reduceOnly": false,
+            "status": "MATCHING",
+            "placeType": "DEFAULT",
+            "takeProfitPrice": "0.0000000000",
+            "cancelSize": 0,
+            "clientOid": "0dbb84ecf17711ec97fcacde48001122"
+        }
+    ]
+}
 ```
 ### HTTP Request
 `GET /api/v2/orders/history`
@@ -1584,7 +1563,6 @@ The interval between <code>startAt</code> and <code>startAt</code> cannot exceed
 | takeProfitPrice| Order take profit stop loss take-profit price |
 | cancelSize | Cancellation quantity |
 | clientOid	| Customer order S/No. |
-| avgPrice	| Average transaction price |
 
 # Position
 
