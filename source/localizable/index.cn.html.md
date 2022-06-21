@@ -92,6 +92,12 @@ KuCoin Futures为专业做市商提供做市激励计划。 参与该计划，�
 ## 数据中心
 KuCoin 数据中心位于AWS日本东京 (ap-northeast-1a) 地区。
 
+## 常见问题
+
+问题：如何计算订单成交平均价格
+<br/>
+答复：订单成交平均价格 = `dealValue`/`dealSize`.
+
 ---
 # REST API
 ## 请求说明
@@ -1089,11 +1095,13 @@ orderId | 订单id
 ## 单个撤单
 ```json
 {
-	"success": true,
-	"code": "200",
-	"msg": "success",
-	"retry": false,
-	"data": null
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "orderId": "51711797534732288"
+    }
 }
 ```
 
@@ -1215,38 +1223,32 @@ orderIds | 成功撤掉的订单id
 ## 查询单个订单详情
 ``` json
 {
-    "success": true,
-    "code": "200",
-    "msg": "success",
-    "retry": false,
+    "code": "200000",
     "data": {
-        "id": "31744981194510336",
-        "symbol": "LINKUSDTM",
-        "size": 2020,
-        "orderType": "LIMIT",
-        "placeType": "DEFAULT",
-        "side": "SELL",
-        "price": "12.5930000000",
-        "dealSize": 911,
-        "reduceOnly": false,
-        "workingType": null,
-        "orderTime": "1651040593311",
-        "stopPrice": "0.0000000000",
-        "takeProfitPrice": "0.0000000000",
-        "orderDisplayType": "LIMIT",
-        "leverage": null,
+        "id": "49629987480838144",
+        "symbol": "BTCUSDTM",
+        "type": "LIMIT",
+        "side": "BUY",
+        "price": "1.0",
+        "size": "1",
+        "dealSize": "0",
+        "dealValue": "0.0",
+        "workingType": "",
+        "stopPrice": null,
         "timeInForce": "GTC",
-        "hidden": false,
-        "visibleSize": 0,
-        "updatedAt": null,
-        "status": "MATCHING",
-        "cancelSize": 0,
-        "dealValue": "1147.2223000000",
         "postOnly": false,
+        "hidden": false,
+        "leverage": 5,
         "closeOrder": false,
-        "fromReduce": false,
-        "settlementCurrency": null,
-        "createdAt": 1651040593311
+        "visibleSize": null,
+        "remark": null,
+        "orderTime": "1655304711124",
+        "reduceOnly": false,
+        "status": "FINISHED",
+        "placeType": "DEFAULT",
+        "takeProfitPrice": null,
+        "cancelSize": 1,
+        "clientOid": "122345"
     }
 }
 ```
@@ -1294,54 +1296,40 @@ clientOid | STRING | NO | 用户自定义orderId
 | takeProfitPrice| 订单止盈止损 止盈价格 |
 | cancelSize | 取消数量 |
 | clientOid	| 客户订单编号 |
-| avgPrice	| 平均成交价 |
-
 
 
 ## 查询活跃订单
 ``` json
 {
-    "success": true,
-    "code": "200",
-    "msg": "success",
-    "retry": false,
-    "data": {
-        "currentPage": 1,
-        "pageSize": 50,
-        "totalNum": "1",
-        "totalPage": 1,
-        "items": [
-            {
-                "id": "31744981194510336",
-                "symbol": "LINKUSDTM",
-                "size": 2020,
-                "orderType": "LIMIT",
-                "placeType": "DEFAULT",
-                "side": "SELL",
-                "price": "12.5930000000",
-                "dealSize": 894,
-                "reduceOnly": false,
-                "workingType": null,
-                "orderTime": "1651040593311",
-                "stopPrice": "0.0000000000",
-                "takeProfitPrice": "0.0000000000",
-                "orderDisplayType": "LIMIT",
-                "leverage": null,
-                "timeInForce": "GTC",
-                "hidden": false,
-                "visibleSize": 0,
-                "updatedAt": null,
-                "status": "MATCHING",
-                "cancelSize": 0,
-                "dealValue": "1125.8142000000",
-                "postOnly": false,
-                "closeOrder": false,
-                "fromReduce": false,
-                "settlementCurrency": null,
-                "createdAt": 1651040593311
-            }
-        ]
-    }
+    "code": "200000",
+    "data": [
+        {
+            "id": "51812226666860544",
+            "symbol": "BTCUSDTM",
+            "type": "LIMIT",
+            "side": "BUY",
+            "price": "1.0000000000",
+            "size": "10",
+            "dealSize": "0",
+            "dealValue": "0.0000000000",
+            "workingType": null,
+            "stopPrice": "0.0000000000",
+            "timeInForce": "GTC",
+            "postOnly": false,
+            "hidden": false,
+            "leverage": null,
+            "closeOrder": false,
+            "visibleSize": 0,
+            "remark": null,
+            "orderTime": "1655824997481",
+            "reduceOnly": false,
+            "status": "MATCHING",
+            "placeType": "DEFAULT",
+            "takeProfitPrice": "0.0000000000",
+            "cancelSize": 0,
+            "clientOid": "12e7fdc0f17611ec990facde48001122"
+        }
+    ]
 }
 ``` 
 ### HTTP请求
@@ -1380,7 +1368,6 @@ clientOid | STRING | NO | 用户自定义orderId
 | takeProfitPrice| 订单止盈止损 止盈价格 |
 | cancelSize | 取消数量 |
 | clientOid	| 客户订单编号 |
-| avgPrice	| 平均成交价 |
 
 
 
@@ -1457,46 +1444,41 @@ clientOid | STRING | NO | 用户自定义orderId
 | takeProfitPrice| 订单止盈止损 止盈价格 |
 | cancelSize | 取消数量 |
 | clientOid	| 客户订单编号 |
-| avgPrice	| 平均成交价 |
 
 
 ## 查询历史订单
 ```json
 {
-      "success": true,
-      "code": "200",
-      "msg": "success",
-      "retry": false,
-      "data": [
-          {
-              "id": "23528093465444352",
-              "symbol": "ETHUSDTM",
-              "type": "LIMIT",
-              "side": "SELL",
-              "price": "3491.0",
-              "size": 1,
-              "dealSize": 1,
-              "dealValue": "34.95",
-              "workingType": "",
-              "stopPrice": null,
-              "timeInForce": "GTC",
-              "postOnly": false,
-              "hidden": null,
-              "leverage": 5,
-              "closeOrder": false,
-              "visibleSize": 0,
-              "remark": null,
-              "orderTime": "61567287853208",
-              "reduceOnly": false,
-              "status": "FINISHED",
-              "placeType": "DEFAULT",
-              "takeProfitPrice": null,
-              "cancelSize": 0,
-              "clientOid": "",
-              "avgPrice": "3491.0"
-          }
-      ]
-  }
+    "code": "200000",
+    "data": [
+        {
+            "id": "51813991558696960",
+            "symbol": "BTCUSDTM",
+            "type": "LIMIT",
+            "side": "BUY",
+            "price": "1.0000000000",
+            "size": "10",
+            "dealSize": "0",
+            "dealValue": "0.0000000000",
+            "workingType": null,
+            "stopPrice": "0.0000000000",
+            "timeInForce": "GTC",
+            "postOnly": false,
+            "hidden": false,
+            "leverage": null,
+            "closeOrder": false,
+            "visibleSize": 0,
+            "remark": null,
+            "orderTime": "1655825418307",
+            "reduceOnly": false,
+            "status": "MATCHING",
+            "placeType": "DEFAULT",
+            "takeProfitPrice": "0.0000000000",
+            "cancelSize": 0,
+            "clientOid": "0dbb84ecf17711ec97fcacde48001122"
+        }
+    ]
+}
 ```
 ### HTTP请求
 `GET /api/v2/orders/history`
@@ -1541,7 +1523,6 @@ clientOid | STRING | NO | 用户自定义orderId
 | takeProfitPrice| 订单止盈止损 止盈价格 |
 | cancelSize | 取消数量 |
 | clientOid	| 客户订单编号 |
-| avgPrice	| 平均成交价 |
 
 # 仓位
 
