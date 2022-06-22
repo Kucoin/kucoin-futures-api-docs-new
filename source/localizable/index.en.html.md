@@ -2908,7 +2908,7 @@ Topic: `/futuresTrade/orders`
         "canceledSize": "0", // “canceled” message in progress, reduced quantity for the order
         "clientOid": "5ce24c16b210233c36ee321d", // User-defined ID
         "orderTime": , // Order placement time in ms
-        "liquidity": "maker", // Transaction side. Take the buy-sell side of “taker” side.
+        "liquidity": "maker", // Liquidity: “taker“ or “maker“.
         "ts": // Timestamp in ms,
         "sn": //Serial No., sn
     }

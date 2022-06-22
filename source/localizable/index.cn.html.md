@@ -2861,7 +2861,7 @@ Topic: `/futuresContract/fundingRate:{symbol}`
         "canceledSize": "0", // canceled消息中，订单减少的数量
         "clientOid": "5ce24c16b210233c36ee321d", //用户自定义ID
         "orderTime": , // 下单时间 ms
-        "liquidity": "maker", // 成交方向，取taker一方的买卖方向
+        "liquidity": "maker", // 流动性类型: "taker" 或 "maker"
         "ts": // 时间戳 ms,
         "sn": //序列号 sn
     }
