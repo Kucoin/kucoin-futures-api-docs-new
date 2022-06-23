@@ -40,7 +40,7 @@ The sandbox is a test environment, and can be used to test the API
 Login sessions and API keys in the sandbox environment are completely `separated` from the production environment. You can use the web interface in the sandbox environment to create API keys.
 
 <aside class="notice">
-    After registering in the sandbox environment, you will receive a certain amount of virtual funds (XBT) that the system automatically recharges into your account. If you wish to make a trade, please transfer your assets from your main account to your trading account. These funds are purely for testing purposes and cannot be withdrawn.
+    After registering in the sandbox environment, you will receive a certain amount of virtual funds (BTC) that the system automatically recharges into your account. If you wish to make a trade, please transfer your assets from your main account to your trading account. These funds are purely for testing purposes and cannot be withdrawn.
 </aside>
 
 
@@ -111,6 +111,10 @@ Q: How to calculate the average transaction price of a filled order
 <br/>
 A: average price = `dealValue`/`dealSize`.
 
+Q: Why no XBT contracts anymore
+<br/>
+A: The symbol of the BTC Contracts will be uniformly modified from `XBT` to `BTC`. For example: USDT Margined Perpetual Contracts, the symbol will be changed from XBTUSDTM to BTCUSDTM.
+
 ---
 # REST API
 ## Request Description
@@ -132,7 +136,7 @@ The request URL consists of the base URL and the specified API endpoint.
 Each API provides a corresponding endpoint, available under the HTTP `Requests` module.
 For `GET` requests, just concatenate the request parameters after the request path.
 
-For example: For the "Get the position of a contract" API, the default endpoint is `/api/v2/symbol-position`. When the "contract" parameter (`XBTUSDM`) is requested, this endpoint becomes: `/api/v2/symbol-position?symbol=XBTUSDM`. So your final request URL should be: `https://api-futures.kucoin.com/api/v2/symbol-position?symbol=XBTUSDM`.
+For example: For the "Get the position of a contract" API, the default endpoint is `/api/v2/symbol-position`. When the "contract" parameter (`BTCUSDTM`) is requested, this endpoint becomes: `/api/v2/symbol-position?symbol=BTCUSDTM`. So your final request URL should be: `https://api-futures.kucoin.com/api/v2/symbol-position?symbol=BTCUSDTM`.
 
 ## Requests
 The content-type of all requests and responses is `application/json`.  
@@ -141,7 +145,7 @@ Unless otherwise stated, all timestamp parameters are in Unix timestamp millisec
 
 ## Parameters
 
-For `GET` and `DELETE` requests, the parameters need to be concatenated in the request URL (eg: `/api/v2/symbol-position?symbol=XBTUSDM`).
+For `GET` and `DELETE` requests, the parameters need to be concatenated in the request URL (eg: `/api/v2/symbol-position?symbol=BTCUSDTM`).
 
 For `POST` and `PUT` requests, the parameters need to be spliced in the request body in JSON format (eg: `{"side":"buy"}`).
 <aside class="notice">Don't add spaces to JSON strings.</aside>
@@ -350,9 +354,9 @@ Request headers for all REST parameters must contain the following:
     api_key = "api_key"
     api_secret = "api_secret"
     api_passphrase = "api_passphrase"
-    url = 'https://api-futures.kucoin.com/api/v1/position?symbol=XBTUSDM'
+    url = 'https://api-futures.kucoin.com/api/v2/symbol-position?symbol=BTCUSDTM'
     now = int(time.time() * 1000)
-    str_to_sign = str(now) + 'GET' + '/api/v1/position?symbol=XBTUSDM'
+    str_to_sign = str(now) + 'GET' + '/api/v2/symbol-position?symbol=BTCUSDTM'
     signature = base64.b64encode(
         hmac.new(api_secret.encode('utf-8'), str_to_sign.encode('utf-8'), hashlib.sha256).digest())
     passphrase = base64.b64encode(hmac.new(api_secret.encode('utf-8'), api_passphrase.encode('utf-8'), hashlib.sha256).digest())    
@@ -367,12 +371,12 @@ Request headers for all REST parameters must contain the following:
     print(response.status_code)
     print(response.json())
     
-    #Example for create deposit addresses in python
-    url = 'https://api-futures.kucoin.com/api/v1/deposit-address'
+    #Example for Order placement in python
+    url = 'https://api-futures.kucoin.com/api/v2/order'
     now = int(time.time() * 1000)
-    data = {"currency": "XBT"}
+    data = {"symbol": "BTCUSDTM", "side": "BUY", "type": "LIMIT", "price": 1, "size": 1}
     data_json = json.dumps(data)
-    str_to_sign = str(now) + 'POST' + '/api/v1/deposit-address' + data_json
+    str_to_sign = str(now) + 'POST' + '/api/v2/order' + data_json
     signature = base64.b64encode(
         hmac.new(api_secret.encode('utf-8'), str_to_sign.encode('utf-8'), hashlib.sha256).digest())
     passphrase = base64.b64encode(hmac.new(api_secret.encode('utf-8'), api_passphrase.encode('utf-8'), hashlib.sha256).digest())
@@ -2409,7 +2413,7 @@ If the server does not receive a ping message from the client within 60 seconds,
 {
     "id": 1545910660739, // A unique value representing an ID 
     "type": "subscribe",
-    "topic": "/market/ticker:XBTUSDM", // The subscribed channel. Some channels support the use of "," to separately subscribe to the information push of multiple contracts.
+    "topic": "/futuresMarket/ticker:BTCUSDTM", // The subscribed channel. Some channels support the use of "," to separately subscribe to the information push of multiple contracts.
     "privateChannel": false, // Whether to use private channels. The default setting is "false".
     "response": true // Whether the server needs to return the information pushed by this channel. Default configuration is “false”.
 }
@@ -2450,7 +2454,7 @@ Used to unsubscribe to a “topic” you previously subscribed to
   {
     "id": "1545910840805",                            // A unique value representing an ID 
     "type": "unsubscribe",
-    "topic": "/market/ticker:XBTUSDM",      // The channel you unsubscribed from. Some channels support the use of "," to separately unsubscribe to messages for multiple trading pairs.
+    "topic": "/futuresMarket/ticker:BTCUSDTM",      // The channel you unsubscribed from. Some channels support the use of "," to separately unsubscribe to messages for multiple trading pairs.
     "privateChannel": false, 
     "response": true,                                  // Whether the server needs to return the information pushed by this channel. Default configuration is “false”.
 
@@ -2502,10 +2506,10 @@ Please enter the following command to open multiple “bt1” channels
  `{"id": "1Jpg30DEdU", "type": "openTunnel", "newTunnelId": "bt1", "response": true}`
 
 Add the parameter \*\*`tunnelId`\** to the designation:
-`{"id": "1JpoPamgFM", "type": "subscribe", "topic": "/market/ticker:XBTUSDM"，"tunnelId": "bt1", "response": true}`
+`{"id": "1JpoPamgFM", "type": "subscribe", "topic": "/futuresMarket/ticker:BTCUSDTM"，"tunnelId": "bt1", "response": true}`
 
 Upon successful request, you will receive a push message corresponding to the **`tunnelIId`**:
-`{"id": "1JpoPamgFM", "type": "message", "topic": "/market/ticker:XBTUSDM", "subject": "trade.ticker", "tunnelId": "bt1", "data": {...}}`
+`{"id": "1JpoPamgFM", "type": "message", "topic": "/futuresMarket/ticker:BTCUSDTM", "subject": "trade.ticker", "tunnelId": "bt1", "data": {...}}`
 
 To close the \*\*`tunnel`\*\*, enter the following command.
 `{"id": "1JpsAHsxKS", "type": "closeTunnel", "tunnelId": "bt1", "response": true}`
@@ -2536,16 +2540,16 @@ Order book datamining, transaction history data, and snapshot messages all retur
   {
     "id": 1545910660740,                          
     "type": "subscribe",
-    "topic": "/futuresMarket/ticker:XBTUSDM",
+    "topic": "/futuresMarket/ticker:BTCUSDTM",
     "response": true                              
   }
 ```
 ```json
 {
     "subject": "ticker",
-    "topic": "/futuresMarket/ticker:XBTUSDM",
+    "topic": "/futuresMarket/ticker:BTCUSDTM",
     "data": {
-        "symbol": "XBTUSDM", // Quotes
+        "symbol": "BTCUSDTM", // Quotes
         "bestBidSize": 795, // Best bid price total quantity
         "bestBidPrice": 3200.00, // Best bid price
         "bestAskPrice": 3600.00, // Best offer price
@@ -2587,7 +2591,7 @@ Subscribe to this topic to get data pushes on the best bid and offer prices (BBO
 {
     "id": 1545910660740,
     "type": "subscribe",
-    "topic": "/futuresMarket/level2:XBTUSDM",
+    "topic": "/futuresMarket/level2:BTCUSDTM",
     "response": true
 }
 ```
@@ -2595,7 +2599,7 @@ Subscribe to this topic to get data pushes on the best bid and offer prices (BBO
 //Return Example
 {
     "subject": "level2",
-    "topic": "/futuresMarket/level2:XBTUSDM",
+    "topic": "/futuresMarket/level2:BTCUSDTM",
     "type": "message",
     "data": {
         "start": 20711,
@@ -2641,17 +2645,17 @@ Calibration Process:
 {
     "id": 1545910660741,
     "type": "subscribe",
-    "topic": "/futuresMarket/execution:XBTUSDM",
+    "topic": "/futuresMarket/execution:BTCUSDTM",
     "response": true
 }
 ```
 ```json
 //Return Example
 {
-    "topic": "/futuresMarket/execution:XBTUSDM",
+    "topic": "/futuresMarket/execution:BTCUSDTM",
     "subject": "execution",
     "data": {
-        "symbol": "XBTUSDM", // Contract
+        "symbol": "BTCUSDTM", // Contract
         "matchSide": "sell", // Transaction side (buy/sell)
         "size": 1, // Fill quantity
         "price": 3200.00, // Fill price
@@ -2816,7 +2820,7 @@ Topic: `/futuresContract/markPrice`
     "subject": "mark.index.price",
     "sn": 123123,
     "data": {
-        "symbol": "XBTUSDM", // Contract Symbol
+        "symbol": "BTCUSDTM", // Contract Symbol
         "granularity": 1000, // Granularity
         "indexPrice": 4000.23, // Index price
         "markPrice": 4010.52, // Mark price
@@ -2850,7 +2854,7 @@ Topic: `/futuresContract/fundingRate:{symbol}`
  //Funding rate
 {
     "type": "message",
-    "topic": "/futuresContract/fundingRate:XBTUSDM",
+    "topic": "/futuresContract/fundingRate:BTCUSDTM",
     "subject": "funding.rate",
     "sn": 25997405694459904,
     "data": {

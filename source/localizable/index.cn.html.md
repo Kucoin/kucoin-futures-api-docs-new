@@ -33,7 +33,7 @@ KuCoin Futures API分为两部分：`REST API` 和 `Websocket`实时数据流
 沙盒是测试环境，用于测试`API`连接和`Web`交易，并提供交易的所有功能。在沙盒中，您可以使用`虚假资金`来测试交易功能。
 沙盒环境中的登录会话和API密钥与生产环境完全`分离`。您需要在Web登录沙盒网址`https://sandbox-futures.kucoin.com`去创建`API`密钥。
 <aside class="notice">
-    在沙盒环境中注册后，您将收到系统在您的帐户中自动充值的一定数量的`虚假资金（XBT）`。如果您想交易，请将资产从`储蓄账户`转移到`交易账户`。这些资金仅用于测试目的，不能提现。
+    在沙盒环境中注册后，您将收到系统在您的帐户中自动充值的一定数量的`虚假资金（BTC）`。如果您想交易，请将资产从`储蓄账户`转移到`交易账户`。这些资金仅用于测试目的，不能提现。
 </aside>
 
 沙盒REST API地址: `https://api-sandbox-futures.kucoin.com` 
@@ -98,6 +98,10 @@ KuCoin 数据中心位于AWS日本东京 (ap-northeast-1a) 地区。
 <br/>
 答复：订单成交平均价格 = `dealValue`/`dealSize`.
 
+问题：为什么没有找到XBT相关的合约
+<br/>
+答复：BTC交易对的symbol代码，会统一将`XBT`修改为`BTC`。比如：U本位BTC永续合约，symbol的代码会从 XBTUSDTM 换成 BTCUSDTM.
+
 ---
 # REST API
 ## 请求说明
@@ -120,7 +124,7 @@ REST API对用户、交易及市场数据均提供了接口。
 
 对于`GET`请求，只需将请求参数拼接在请求路径后面。
 
-例如：对于“获取某个合约的仓位” 接口，其默认端点为`/api/v2/symbol-position`。请求“合约”参数（`XBTUSDM`）时，该端点将变为：`/api/v2/symbol-position?symbol=XBTUSDM`。因此，您最终请求的URL应为：`https://api-futures.kucoin.com/api/v2/symbol-position?symbol=XBTUSDM`。
+例如：对于“获取某个合约的仓位” 接口，其默认端点为`/api/v2/symbol-position`。请求“合约”参数（`BTCUSDTM`）时，该端点将变为：`/api/v2/symbol-position?symbol=BTCUSDTM`。因此，您最终请求的URL应为：`https://api-futures.kucoin.com/api/v2/symbol-position?symbol=BTCUSDTM`。
 
 ## 请求
 所有的请求和响应的内容类型都是`application/json`。  
@@ -130,7 +134,7 @@ REST API对用户、交易及市场数据均提供了接口。
 
 ## 参数
 
-对于`GET`和`DELETE`请求，需将参数拼接在请求URL中（如：`/api/v2/symbol-position?symbol=XBTUSDM`）。
+对于`GET`和`DELETE`请求，需将参数拼接在请求URL中（如：`/api/v2/symbol-position?symbol=BTCUSDTM`）。
 
 对于`POST`和`PUT`请求，需将参数以JSON格式拼接在请求主体中（如：`{"side":"buy"}`）。
 <aside class="notice">不要在JSON字符串中添加空格</aside>
@@ -320,13 +324,9 @@ API中的所有时间戳以Unix时间戳毫秒为单位返回（如：`155807916
         }
 
         public function signature($request_path = '', $body = '', $timestamp = false, $method = 'GET') {
-          
-          $body = is_array($body) ? json_encode($body) : $body; // Body must be in json format
-          
+          $body = is_array($body) ? json_encode($body) : $body; // Body must be in json format 
           $timestamp = $timestamp ? $timestamp : time() * 1000;
-
           $what = $timestamp . $method . $request_path . $body;
-
           return base64_encode(hash_hmac("sha256", $what, $this->secret, true));
         }
     }
@@ -335,13 +335,12 @@ API中的所有时间戳以Unix时间戳毫秒为单位返回（如：`155807916
 
 ```python
     #Example for get user position in python
-    
     api_key = "api_key"
     api_secret = "api_secret"
     api_passphrase = "api_passphrase"
-    url = 'https://api-futures.kucoin.com/api/v1/position?symbol=XBTUSDM'
+    url = 'https://api-futures.kucoin.com/api/v2/symbol-position?symbol=BTCUSDTM'
     now = int(time.time() * 1000)
-    str_to_sign = str(now) + 'GET' + '/api/v1/position?symbol=XBTUSDM'
+    str_to_sign = str(now) + 'GET' + '/api/v2/symbol-position?symbol=BTCUSDTM'
     signature = base64.b64encode(
         hmac.new(api_secret.encode('utf-8'), str_to_sign.encode('utf-8'), hashlib.sha256).digest())
     passphrase = base64.b64encode(hmac.new(api_secret.encode('utf-8'), api_passphrase.encode('utf-8'), hashlib.sha256).digest())    
@@ -357,11 +356,11 @@ API中的所有时间戳以Unix时间戳毫秒为单位返回（如：`155807916
     print(response.json())
     
     #Example for create deposit addresses in python
-    url = 'https://api-futures.kucoin.com/api/v1/deposit-address'
+    url = 'https://api-futures.kucoin.com/api/v2/order'
     now = int(time.time() * 1000)
-    data = {"currency": "XBT"}
+    data = {"symbol": "BTCUSDTM", "side": "BUY", "type": "LIMIT", "price": 1, "size": 1}
     data_json = json.dumps(data)
-    str_to_sign = str(now) + 'POST' + '/api/v1/deposit-address' + data_json
+    str_to_sign = str(now) + 'POST' + '/api/v2/order' + data_json
     signature = base64.b64encode(
         hmac.new(api_secret.encode('utf-8'), str_to_sign.encode('utf-8'), hashlib.sha256).digest())
     passphrase = base64.b64encode(hmac.new(api_secret.encode('utf-8'), api_passphrase.encode('utf-8'), hashlib.sha256).digest())
@@ -2370,7 +2369,7 @@ var socket = new WebSocket("wss://push.kucoin.com/endpoint?token=xxx&[connectId=
 {
     "id": 1545910660739, //表示ID的唯一值 
     "type": "subscribe",
-    "topic": "/market/ticker:XBTUSDM", // 被订阅的频道。一些频道支持使用“,”分开订阅多个合约的信息推送。
+    "topic": "/futuresMarket/ticker:BTCUSDTM", // 被订阅的频道。一些频道支持使用“,”分开订阅多个合约的信息推送。
     "privateChannel": false, // 是否使用了私有频道，默认设置为“false”。
     "response": true // 服务器是否需要返回该频道推送的信息。默认设置为“false”。
 }
@@ -2411,7 +2410,7 @@ ID用于标识请求和ack的唯一字符串。
   {
     "id": "1545910840805",                            // 表示ID的唯一值 
     "type": "unsubscribe",
-    "topic": "/market/ticker:XBTUSDM",      //被取消订阅的频道。一些频道支持使用“,”分开取消多个交易对的信息订阅。
+    "topic": "/futuresMarket/ticker:BTCUSDTM",      //被取消订阅的频道。一些频道支持使用“,”分开取消多个交易对的信息订阅。
     "privateChannel": false, 
     "response": true,                                  //服务器是否需要返回该频道推送的信息。默认设置为“false”。
 
@@ -2463,10 +2462,10 @@ ID用于标识请求和ack的唯一字符串。
  `{"id": "1Jpg30DEdU", "type": "openTunnel", "newTunnelId": "bt1", "response": true}`
 
 在指定中添加参数**`tunnelId`**：
-`{"id": "1JpoPamgFM", "type": "subscribe", "topic": "/market/ticker:XBTUSDM"，"tunnelId": "bt1", "response": true}`
+`{"id": "1JpoPamgFM", "type": "subscribe", "topic": "/futuresMarket/ticker:BTCUSDTM"，"tunnelId": "bt1", "response": true}`
 
 请求成功后，您将收到 **`tunnelIId`** 对应的消息推送：
-`{"id": "1JpoPamgFM", "type": "message", "topic": "/market/ticker:XBTUSDM", "subject": "trade.ticker", "tunnelId": "bt1", "data": {...}}`
+`{"id": "1JpoPamgFM", "type": "message", "topic": "/futuresMarket/ticker:BTCUSDTM", "subject": "trade.ticker", "tunnelId": "bt1", "data": {...}}`
 
 关闭**`通道`**，请输入以下指令：
 `{"id": "1JpsAHsxKS", "type": "closeTunnel", "tunnelId": "bt1", "response": true}`
@@ -2497,16 +2496,16 @@ ID用于标识请求和ack的唯一字符串。
   {
     "id": 1545910660740,                          
     "type": "subscribe",
-    "topic": "/futuresMarket/ticker:XBTUSDM",
+    "topic": "/futuresMarket/ticker:BTCUSDTM",
     "response": true                              
   }
 ```
 ```json
 {
     "subject": "ticker",
-    "topic": "/futuresMarket/ticker:XBTUSDM",
+    "topic": "/futuresMarket/ticker:BTCUSDTM",
     "data": {
-        "symbol": "XBTUSDM", // 行情
+        "symbol": "BTCUSDTM", // 行情
         "bestBidSize": 795, // 最佳买一价总数量
         "bestBidPrice": 3200.00, // 最佳买一价
         "bestAskPrice": 3600.00, // 最佳卖一价
@@ -2548,7 +2547,7 @@ Topic: `/futuresMarket/ticker:{symbol}`
 {
     "id": 1545910660740,
     "type": "subscribe",
-    "topic": "/futuresMarket/level2:XBTUSDM",
+    "topic": "/futuresMarket/level2:BTCUSDTM",
     "response": true
 }
 ```
@@ -2556,7 +2555,7 @@ Topic: `/futuresMarket/ticker:{symbol}`
 //返回示例
 {
     "subject": "level2",
-    "topic": "/futuresMarket/level2:XBTUSDM",
+    "topic": "/futuresMarket/level2:BTCUSDTM",
     "type": "message",
     "data": {
         "start": 20711,
@@ -2602,17 +2601,17 @@ Topic：`/futuresMarket/level2:{symbol}`
 {
     "id": 1545910660741,
     "type": "subscribe",
-    "topic": "/futuresMarket/execution:XBTUSDM",
+    "topic": "/futuresMarket/execution:BTCUSDTM",
     "response": true
 }
 ```
 ```json
 //返回示例
 {
-    "topic": "/futuresMarket/execution:XBTUSDM",
+    "topic": "/futuresMarket/execution:BTCUSDTM",
     "subject": "execution",
     "data": {
-        "symbol": "XBTUSDM", // 合约
+        "symbol": "BTCUSDTM", // 合约
         "matchSide": "sell", // 成交方向 buy/sell
         "size": 1, // 订单成交张数
         "price": 3200.00, // 成交价格
@@ -2769,7 +2768,7 @@ Topic: `/futuresMarket/level2Depth50:{symbol}`
     "subject": "mark.index.price",
     "sn": 123123,
     "data": {
-        "symbol": "XBTUSDM", //合约symbol
+        "symbol": "BTCUSDTM", //合约symbol
         "granularity": 1000, //粒度
         "indexPrice": 4000.23, //指数价格
         "markPrice": 4010.52, //标记价格
@@ -2804,7 +2803,7 @@ Topic: `/futuresContract/markPrice`
  //资金费率
 {
     "type": "message",
-    "topic": "/futuresContract/fundingRate:XBTUSDM",
+    "topic": "/futuresContract/fundingRate:BTCUSDTM",
     "subject": "funding.rate",
     "sn": 25997405694459904,
     "data": {
