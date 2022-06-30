@@ -1633,7 +1633,7 @@ maintenanceMarginRate | 仓位维持保证金率 |
 maintenanceMargin | 维持保证金 | 
 adlPercentile | adl排名信息 | 
 
-## 增加仓位保证金
+## 增减保证金
 ```json
 {
     "code": "200000",

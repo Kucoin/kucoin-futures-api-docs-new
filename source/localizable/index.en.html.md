@@ -1678,7 +1678,7 @@ maintenanceMarginRate | Position maintenance margin rate |
 maintenanceMargin | Maintenance margin | 
 adlPercentile | ADL ranking information | 
 
-## Increase position margin
+## Increase or decrease position margin
 ```json
 {
     "code": "200000",
