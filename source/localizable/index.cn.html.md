@@ -1014,6 +1014,30 @@ sn|序列号
 createdAt|时间
 remark|付款账户备注
 
+## 资金转入合约账户
+``` json
+{
+    "code": "200", //code为200代表转入成功，否则代表失败
+    "msg": "",
+    "retry": true,
+    "success": true
+}
+```
+### HTTP请求
+`POST /api/v2/transfer-in`
+### API权限
+该接口需要`交易权限`
+### 频率限制
+此接口针对每个账号请求频率限制为`30次/3s`
+### 参数  
+参数|数据类型|是否必需|含义
+---|---|---|---
+amount|Number|YES|交易金额
+currency|String|YES|币种
+payAccountType|String|YES|付款账户类型：只能是`MAIN`-储蓄账户，`TRADE`-交易账户
+### 返回值
+当`code`为`200`代表成功，其他代表失败
+
 
 ---
 # 交易
@@ -1633,7 +1657,7 @@ maintenanceMarginRate | 仓位维持保证金率 |
 maintenanceMargin | 维持保证金 | 
 adlPercentile | adl排名信息 | 
 
-## 增加仓位保证金
+## 增减保证金
 ```json
 {
     "code": "200000",
