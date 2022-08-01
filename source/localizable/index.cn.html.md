@@ -94,10 +94,6 @@ KuCoin 数据中心位于AWS日本东京 (ap-northeast-1a) 地区。
 
 ## 常见问题
 
-问题：如何计算订单成交平均价格
-<br/>
-答复：订单成交平均价格 = `dealValue`/`dealSize`.
-
 问题：为什么没有找到XBT相关的合约
 <br/>
 答复：BTC交易对的symbol代码，会统一将`XBT`修改为`BTC`。比如：U本位BTC永续合约，symbol的代码会从 XBTUSDTM 换成 BTCUSDTM.
@@ -865,7 +861,7 @@ remark|说明
 }
 ```
 ### HTTP请求
-`POST api/v2/sub-transfer`
+`POST /api/v2/sub-transfer`
 ### API权限
 该接口需要`交易权限`
 ### 频率限制
@@ -1058,6 +1054,8 @@ payAccountType|String|YES|付款账户类型：只能是`MAIN`-储蓄账户，`T
     }
 }
 ```
+### 下单限制
+对于一个账号，每一个交易对最大活跃委托订单数量`100` （包含未触发的止损单）。
 ### HTTP请求
 `POST /api/v2/order`
 ### API权限
@@ -2054,6 +2052,34 @@ maintenanceMarginRate | 仓位价值处于该等级限额时，用到的维持�
 | value | 资金费率 |
 | hasMore | 是否有下一页 |
 
+## 查询当前资金费率
+```json
+{
+    "code": "200000",
+    "data": {
+        "symbol": ".BTCUSDTMFPI8H",
+        "granularity": "28800000",
+        "timePoint": "1659312000000",
+        "value": "0.000100",
+        "predictedValue": "0.000081"
+    }
+}
+```
+### HTTP请求
+`GET /api/v2/funding-rate/{symbol}/current`
+### 参数
+参数 | 数据类型 | 是否必须 | 含义 
+--------- | ------- | -----------| -----------
+| symbol | String | YES | 合约symbol	|
+### 返回值
+| 字段   | 含义   |
+| ------ | ------ |
+| symbol | 资金费率symbol |
+| granularity | 粒度(毫秒) |
+| timePoint | 时间点(毫秒) |
+| value | 资金费率 |
+| predictedValue | 预测资金费率 |
+
 ## 查询合约标记价格
 ```json
 {
@@ -2517,6 +2543,7 @@ ID用于标识请求和ack的唯一字符串。
 
 ## 交易实时行情 ticker
 ```json
+//订阅示例
   {
     "id": 1545910660740,                          
     "type": "subscribe",
@@ -2525,16 +2552,20 @@ ID用于标识请求和ack的唯一字符串。
   }
 ```
 ```json
+//返回示例
 {
-    "subject": "ticker",
+    "type": "message",
     "topic": "/futuresMarket/ticker:BTCUSDTM",
+    "subject": "ticker",
+    "sn": 355878165,
     "data": {
-        "symbol": "BTCUSDTM", // 行情
-        "bestBidSize": 795, // 最佳买一价总数量
-        "bestBidPrice": 3200.00, // 最佳买一价
-        "bestAskPrice": 3600.00, // 最佳卖一价
-        "bestAskSize": 284, // 最佳卖一价总数量
-        "ts": 1650447469782 // 成交时间 - 毫秒
+        "symbol": "BTCUSDTM",// 交易对
+        "sequence": 355878165,// 序列号
+        "bestBidSize": 18180,// 最佳买一价总数量
+        "bestBidPrice": "21198.0",// 最佳买一价
+        "bestAskPrice": "21200.0",// 最佳卖一价总数量
+        "bestAskSize": 27,// 最佳卖一价总数量
+        "ts": 1658902750616// 成交时间 - 毫秒
     }
 }
 ```
