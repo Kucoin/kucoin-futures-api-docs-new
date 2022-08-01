@@ -107,9 +107,6 @@ Users with good market making strategies and large trading volumes are welcome t
 KuCoin data center is located in AWS Japan's ap-northeast-1a region.
 
 ## FAQ
-Q: How to calculate the average transaction price of a filled order
-<br/>
-A: average price = `dealValue`/`dealSize`.
 
 Q: Why no XBT contracts anymore
 <br/>
@@ -885,7 +882,7 @@ remark|Description
 }
 ```
 ### HTTP Request
-`POST api/v2/sub-transfer`
+`POST /api/v2/sub-transfer`
 ### API Permissions
 This API requires `Trade` permissions
 ### Frequency Limits
@@ -1081,6 +1078,8 @@ This portion requires signature verification.
     }
 }
 ```
+### Place Order Limit
+The maximum active orders for a single trading pair in one account is `100` (untriggered stop orders included).
 ### HTTP Request
 `POST /api/v2/order`
 ### API Permissions
@@ -2024,7 +2023,7 @@ maintenanceMarginRate | Maintenance margin rate used when the position value is 
 `GET /api/v2/kline/query`
 ### Parameters
 Parameters | Data Type | Compulsory? | Definitions |  
---------- | ------- | -----------| -----------|                                      |
+--------- | ------- | -----------| -----------|
 | granularity | Integer | Yes |Represents minute count. Selectable range: `1`, `5`, `15`, `30`, `60`, `120`, `240`, `480`, `720`, `1440`, `10080` |
 | symbol   | String | Yes |Contract Symbol |
 | from   |  Long  | No | Initial time (ms) |
@@ -2053,8 +2052,8 @@ Parameters | Data Type | Compulsory? | Definitions |
 ### HTTP Request
 `GET /api/v2/contract/{symbol}/funding-rates`
 ### Parameters
-Parameters | Data Type | Compulsory? | Definitions |  
---------- | ------- | -----------| -----------|                                      |
+Parameters | Data Type | Compulsory? | Definitions | 
+--------- | ------- | -----------| -----------|
 | symbol   | String   | Yes | Contract Symbol |
 | startAt | Long   | No | Start time |
 | endAt | Long   | No | End time |
@@ -2074,6 +2073,34 @@ Parameters | Data Type | Compulsory? | Definitions |
 | value | Funding rate |
 | hasMore | Is there data on the next page |
 
+## Get Current Funding Rate
+```json
+{
+    "code": "200000",
+    "data": {
+        "symbol": ".BTCUSDTMFPI8H",
+        "granularity": "28800000",
+        "timePoint": "1659312000000",
+        "value": "0.000100",
+        "predictedValue": "0.000081"
+    }
+}
+```
+### HTTP Request
+`GET /api/v2/funding-rate/{symbol}/current`
+### Parameters
+Parameters | Data Type | Compulsory? | Definitions |  
+--------- | ------- | -----------| -----------|
+| symbol   | String | Yes |Contract Symbol |
+### Return Value
+| Field   | Definitions   |
+| ------ | ------ |
+| symbol | Funding Rate Symbol |
+| granularity | Granularity (milisecond)) |
+| timePoint | Time point (milisecond) |
+| value | Funding rate |
+| predictedValue | Predicted funding rate |
+
 ## Get the Contract’s Mark price
 ```json
 {
@@ -2090,7 +2117,7 @@ Parameters | Data Type | Compulsory? | Definitions |
 `GET /api/v2/mark-price/{symbol}/current`
 ### Parameters
 Parameters | Data Type | Compulsory? | Definitions |  
---------- | ------- | -----------| -----------|                                      |
+--------- | ------- | -----------| -----------|
 | symbol   | String   | Yes | Contract Symbol |
 ### Return Value
 | Field   | Definitions   |
@@ -2537,6 +2564,7 @@ Order book datamining, transaction history data, and snapshot messages all retur
 
 ## Quotes Real Time Ticker
 ```json
+//Subscription Example
   {
     "id": 1545910660740,                          
     "type": "subscribe",
@@ -2545,16 +2573,20 @@ Order book datamining, transaction history data, and snapshot messages all retur
   }
 ```
 ```json
+//Return Example
 {
-    "subject": "ticker",
+    "type": "message",
     "topic": "/futuresMarket/ticker:BTCUSDTM",
+    "subject": "ticker",
+    "sn": 355878165,
     "data": {
-        "symbol": "BTCUSDTM", // Quotes
-        "bestBidSize": 795, // Best bid price total quantity
-        "bestBidPrice": 3200.00, // Best bid price
-        "bestAskPrice": 3600.00, // Best offer price
-        "bestAskSize": 284, // Best offer price total quantity
-        "ts": 1650447469782 // Transaction time - ms
+        "symbol": "BTCUSDTM",// Contract Symbol
+        "sequence": 355878165,// Sequence
+        "bestBidSize": 18180,// Best bid price total quantity
+        "bestBidPrice": "21198.0",// Best bid price
+        "bestAskPrice": "21200.0",// Best offer price
+        "bestAskSize": 27,// Best offer price total quantity
+        "ts": 1658902750616// Transaction time - ms
     }
 }
 ```
